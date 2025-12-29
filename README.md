@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a **hard** difficulty infrastructure task that challenges LLM agents to deploy a production-grade, multi-region active-active AWS environment using Terraform, then validate automatic failover capabilities.
+This is an infrastructure task that challenges LLM agents to deploy a production-grade, multi-region active-active AWS environment using Terraform, then validate automatic failover capabilities.
 
 ## Task Difficulty
 
@@ -121,11 +121,11 @@ Agents are likely to struggle with:
 
 The task is considered complete when:
 
-- ✅ All 27 tests pass
-- ✅ Terraform applies without errors
-- ✅ Failover validation JSON contains canary string
-- ✅ Failover time ≤60 seconds
-- ✅ All required infrastructure components exist in both regions
+- All 27 tests pass
+- Terraform applies without errors
+- Failover validation JSON contains canary string
+- Failover time ≤60 seconds
+- All required infrastructure components exist in both regions
 
 ## Files
 
@@ -176,16 +176,6 @@ harbor tasks start-env --path Template/ --interactive
 - Missing cross-region replication configuration
 - Failover validation missing canary string
 - Terraform state not created (didn't actually run apply)
-
-## Design Rationale
-
-### Why This Tests Frontier Models
-
-1. **Multi-Step Planning**: Requires planning infrastructure before implementation
-2. **Architectural Decisions**: Must choose between modules vs. flat structure
-3. **Cross-Service Integration**: Tests understanding of how AWS services interact
-4. **LocalStack Adaptation**: Must adapt real AWS patterns to LocalStack constraints
-5. **Validation Logic**: Must create scripts that prove failover works
 
 ### Why Pass Rate Should Be <40%
 

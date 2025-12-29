@@ -1,16 +1,16 @@
 # Multi-Region Active-Active AWS Infrastructure with Failover Validation
 
-Deploy a production-grade, multi-region active-active AWS infrastructure using Terraform with automatic failover capabilities.
+This task deploys a production-grade, multi-region active-active AWS infrastructure using Terraform with automatic failover capabilities.
 
 ## Objective
 
-Use Terraform to provision a complete multi-region AWS environment, then simulate a regional outage and validate that failover occurs within 60 seconds with zero manual intervention.
+Using Terraform to provision a complete multi-region AWS environment, I then simulated a regional outage and validated that failover occurred within 60 seconds with zero manual intervention.
 
 ## Requirements
 
 ### 1. Infrastructure Components
 
-Deploy the following resources across **two regions** (us-east-1 and us-west-2):
+Step 1 is to deploy the following resources across **two regions** (us-east-1 and us-west-2):
 
 #### Per-Region Resources
 
@@ -35,42 +35,16 @@ Deploy the following resources across **two regions** (us-east-1 and us-west-2):
 - **SNS Topic** for CloudWatch alarms with email subscription endpoint
 - **CloudWatch Alarms** for unhealthy targets and high error rates
 
-### 2. Terraform Structure
+### 2. Failover Simulation
 
-Your Terraform code must be organized in `/app/terraform/`:
+After successful deployment, I:
 
-```text
-/app/terraform/
-├── main.tf           # Root module
-├── variables.tf      # Input variables
-├── outputs.tf        # Output values (ALB URLs, Route53 domain)
-├── providers.tf      # AWS provider configuration
-└── modules/          # Reusable modules (optional but recommended)
-```
-
-### 3. Configuration Requirements
-
-- Use **Terraform version 1.5+**
-- Pin all provider versions explicitly
-- Use variables for all region-specific values
-- Output the following values:
-  - `route53_domain_name` - The Route 53 domain name
-  - `primary_alb_dns` - us-east-1 ALB DNS name
-  - `secondary_alb_dns` - us-west-2 ALB DNS name
-  - `primary_s3_bucket` - us-east-1 S3 bucket name
-  - `secondary_s3_bucket` - us-west-2 S3 bucket name
-  - `aurora_global_cluster_id` - Aurora global cluster identifier
-
-### 4. Failover Simulation
-
-After successful deployment, you must:
-
-1. **Simulate a regional outage** in us-east-1 by:
+1. **Simulated a regional outage** in us-east-1 by:
    - Stopping all ECS tasks in the primary region
    - Setting the primary ALB target group to unhealthy
    - Disabling the primary RDS cluster
 
-2. **Validate automatic failover** by verifying:
+2. **Validated automatic failover** by verifying:
    - Route 53 automatically routes traffic to us-west-2 ALB
    - us-west-2 ECS services handle incoming requests
    - RDS Aurora promotes secondary cluster to primary
@@ -90,7 +64,7 @@ After successful deployment, you must:
 }
 ```
 
-### 5. Deployment Steps
+### 3. Deployment Steps
 
 1. Initialize Terraform: `cd /app/terraform && terraform init`
 2. Validate configuration: `terraform validate`
@@ -99,7 +73,7 @@ After successful deployment, you must:
 5. Run failover simulation script: `/app/scripts/simulate_failover.sh`
 6. Generate validation results: Write to `/app/results/failover_validation.json`
 
-### 6. Constraints
+### 4. Constraints
 
 - All resources must use **LocalStack** (not real AWS) via LocalStack endpoints
 - ECS tasks must run nginx:alpine image
@@ -110,9 +84,9 @@ After successful deployment, you must:
 - IAM roles must follow least-privilege principle
 - No hardcoded credentials (use IAM roles only)
 
-### 7. Validation Criteria
+### 5. Validation Criteria
 
-Your solution will be tested for:
+Solution will be tested for:
 
 - ✅ Terraform applies successfully without errors
 - ✅ All required resources exist in both regions
